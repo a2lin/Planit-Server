@@ -7,8 +7,9 @@ class HelloHandler(tornado.web.RequestHandler):
     def get(self):
         try:
             name = self.get_argument('user_id', True)
-            self.write("you sent me: ", name)
-        except:
+            self.write("you sent me: " + name)
+        except :
+            raise
             self.write("something horrible happened, fml")
 
 class Application(tornado.web.Application):
