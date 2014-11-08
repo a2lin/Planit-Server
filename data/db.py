@@ -82,6 +82,23 @@ class EventsMap(Base):
       return "<EventMap(%s, %s)" % (self.event_hash, self.email)
 
 
+# Events <-> Users map for correlation
+class FriendsMap(Base):
+   __tablename__ = 'friends_map'
+
+   email = Column(String(100), primary_key=True)
+   friend = Column(String(100))
+
+   def __init__(self, email, friend):
+      self.email = email
+      self.friend = friend
+
+
+   def __repr__(self):
+      return "<FriendMap(%s, %s)" % (self.email, self.friend)
+
+
+
 def serialize(Events):
    columns = [c.key for c in class_mapper(Events.__class__).columns]
    return dict((c, getattr(Events,c)) for c in columns)
