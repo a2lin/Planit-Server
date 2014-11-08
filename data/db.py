@@ -6,6 +6,10 @@ from sqlalchemy import Column, Integer, String
 
 from collections import OrderedDict
 
+# stuff for json dumps
+from sqlalchemy.orm import class_mapper
+from json import dumps
+
 
 # SQL setup
 engine = create_engine('mysql://root:@localhost:3306/planit', echo=False)
@@ -78,3 +82,6 @@ class EventsMap(Base):
       return "<EventMap(%s, %s)" % (self.event_hash, self.email)
 
 
+def serialize(Events):
+   columns = [c.key for c in class_mapper(Events.__class__).columns]
+   return dict((c, getattr(Events,c)) for c in columns)

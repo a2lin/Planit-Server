@@ -5,6 +5,7 @@ from handlers.login_user import LoginUserHandler
 from handlers.create_event import CreateEventHandler
 from handlers.create_event_map import CreateEventMapHandler
 from handlers.get_events import GetEventsHandler
+from handlers.remove_event import RemoveEventHandler
 
 
 #separate this into the handler folder shits, keep here for now for testing
@@ -27,6 +28,7 @@ class Application(tornado.web.Application):
             (r"/create_event", CreateEventHandler),
             (r"/create_event_map", CreateEventMapHandler),
             (r"/get_events", GetEventsHandler),
+            (r"/remove_event", RemoveEventHandler),
         ]
 
         tornado.web.Application.__init__(self, handlers)
