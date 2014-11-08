@@ -23,7 +23,9 @@ class CreateEventHandler(tornado.web.RequestHandler):
             (invalid, ), = session.query(exists().where(Events.event_hash==event_hash))
 
          new_event = Events(event_hash, title, description, location, time, creator)
+         new_event_map = EventsMap(event_hash, creator)
          session.add(new_event)
+         session.add(new_event_map)
          session.commit()
 
          self.write(event_hash)
