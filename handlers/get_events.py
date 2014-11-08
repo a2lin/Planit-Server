@@ -13,13 +13,14 @@ class GetEventsHandler(tornado.web.RequestHandler):
          for event_map in events_map_raw:
             event_hash_list.append(event_map.event_hash)
 
-         event_dict = {}
-         i = 0
+         event_list = []
          for event_hash in event_hash_list:
-            event_dict[i] = serialize(session.query(Events).get(event_hash))
-            i += 1
+            event_list.append(serialize(session.query(Events).get(event_hash)))
+
+         event_wrapper = {}
+         event_wrapper[0] = event_list
                   
-         self.write(event_dict)
+         self.write(event_wrapper)
          
        except:
          raise
