@@ -4,6 +4,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 
+from collections import OrderedDict
+
 
 # SQL setup
 engine = create_engine('mysql://root:@localhost:3306/planit', echo=False)
@@ -30,8 +32,15 @@ class Users(Base):
       return "<User(%s, %s, %s>" % (self.name, self.password, self.email)
 
 
+class DictSerializable():
+   def _asdict(self):
+      result = OrderedDict()
+      for key in self.__mapper__.c.keys():
+         result[key] = getattr(self, key)
+      return result
+
 # Events class for event data
-class Events(Base):
+class Events(Base, DictSerializable):
    __tablename__ = 'events'
 
    event_hash = Column(String(100), primary_key=True)
@@ -52,6 +61,7 @@ class Events(Base):
    def __repr__(self):
       return "<Event(%s, %s, %s, %s, %s, %s>" % \
              (self.event_hash, self.title, self.description, self.location, self.time, self.creator)
+
 
 # Events <-> Users map for correlation
 class EventsMap(Base):
