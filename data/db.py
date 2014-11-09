@@ -50,14 +50,16 @@ class Events(Base, DictSerializable):
    event_hash = Column(String(100), primary_key=True)
    title = Column(String(100))
    description = Column(String(100))
+   image_path = Column(String(100))
    location = Column(String(100))
    time = Column(String(100))
    creator = Column(String(100))
 
-   def __init__(self, event_hash, title, description, location, time, creator):
+   def __init__(self, event_hash, title, description, image_path, location, time, creator):
       self.event_hash = event_hash
       self.title = title
       self.description = description
+      self.image_path = image_path
       self.location = location
       self.time = time
       self.creator = creator

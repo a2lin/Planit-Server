@@ -2,6 +2,7 @@ import tornado.web
 from data.db import *
 from sqlalchemy import *
 import random
+from data.imgr import *
 
 
 class CreateEventHandler(tornado.web.RequestHandler):
@@ -13,7 +14,12 @@ class CreateEventHandler(tornado.web.RequestHandler):
          time = self.get_argument('time', '')
          creator = self.get_argument('creator', '')
 
-         event_hash = title + (str)(random.randint(0,1000000))
+         if not creator or not title:
+            self.write("missing creator or title")
+            return
+
+         event_hash = (str)(random.randint(0,1000000000))
+
          
          #no duplicate users, invalid is true if user exists
          (invalid, ), = session.query(exists().where(Events.event_hash==event_hash))
@@ -22,7 +28,9 @@ class CreateEventHandler(tornado.web.RequestHandler):
             event_hash = title + (str)(random.randint(0,1000000))
             (invalid, ), = session.query(exists().where(Events.event_hash==event_hash))
 
-         new_event = Events(event_hash, title, description, location, time, creator)
+         
+         image_url = searchImage(title)
+         new_event = Events(event_hash, title, description, image_url, location, time, creator)
          new_event_map = EventsMap(event_hash, creator)
          session.add(new_event)
          session.add(new_event_map)
