@@ -12,7 +12,7 @@ from json import dumps
 
 
 # SQL setup
-engine = create_engine('mysql://root:@localhost:3306/planit', echo=False)
+engine = create_engine('mysql://root:gowild!!@localhost:3306/planit', echo=False)
 
 Session = sessionmaker(bind=engine)
 session = Session()

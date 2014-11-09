@@ -31,5 +31,6 @@ class CreateEventMapHandler(tornado.web.RequestHandler):
          self.write(event_hash)
          
        except:
+         print "FUCK"
          raise
          self.write("fuk")

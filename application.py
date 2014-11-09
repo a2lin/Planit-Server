@@ -10,6 +10,7 @@ from handlers.add_friend import AddFriendHandler
 from handlers.get_friends import GetFriendsHandler
 from handlers.edit_event import EditEventHandler
 from handlers.find_friend import FindFriendHandler
+from handlers.get_event_users import GetEventUsersHandler
 
 
 #separate this into the handler folder shits, keep here for now for testing
@@ -37,6 +38,7 @@ class Application(tornado.web.Application):
             (r"/get_friends", GetFriendsHandler),
             (r"/edit_event", EditEventHandler),
             (r"/find_friend", FindFriendHandler),
+            (r"/get_event_users", GetEventUsersHandler),
         ]
 
         tornado.web.Application.__init__(self, handlers)

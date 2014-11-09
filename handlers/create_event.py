@@ -13,6 +13,9 @@ class CreateEventHandler(tornado.web.RequestHandler):
          location = self.get_argument('location', '')
          creator = self.get_argument('creator', '')
 
+         user_list = creator.split("___")
+         creator = user_list[0]
+
          # ensure that it's valid (has creator & title)
          if not creator:
             self.write("-1")
@@ -24,10 +27,11 @@ class CreateEventHandler(tornado.web.RequestHandler):
          (valid, ), = session.query(exists().where(Users.email==creator))
 
          if not valid:
+            print 'user not valid'
             self.write("-3")
             return
 
-         event_hash = (str)(random.randint(1,1000000000))
+         event_hash = (str)(random.randint(1,10000000))
 
          
          #no duplicate users, invalid is true if user exists
@@ -49,11 +53,22 @@ class CreateEventHandler(tornado.web.RequestHandler):
          new_event_map = EventsMap(event_hash, creator)
          session.add(new_event)
          session.add(new_event_map)
+
+         print user_list
+
+         i = 0
+         for user in user_list:
+             if i != 0:
+                 new_event_map1 = EventsMap(event_hash, user)
+                 session.add(new_event_map1)
+             i += 1
+
          session.commit()
 
          self.write(event_hash)
          
        except:
+         print 'FUCK'
          raise
          self.write("fuk")
 
