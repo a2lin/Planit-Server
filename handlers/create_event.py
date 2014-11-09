@@ -14,18 +14,28 @@ class CreateEventHandler(tornado.web.RequestHandler):
          time = self.get_argument('time', '')
          creator = self.get_argument('creator', '')
 
-         if not creator or not title:
-            self.write("missing creator or title")
+         # ensure that it's valid (has creator & title)
+         if not creator:
+            self.write("-1")
+            return
+         if not title:
+            self.write("-2")
             return
 
-         event_hash = (str)(random.randint(0,1000000000))
+         (valid, ), = session.query(exists().where(Users.email==creator))
+
+         if not valid:
+            self.write("-3")
+            return
+
+         event_hash = (str)(random.randint(1,1000000000))
 
          
          #no duplicate users, invalid is true if user exists
          (invalid, ), = session.query(exists().where(Events.event_hash==event_hash))
 
          while invalid:
-            event_hash = title + (str)(random.randint(0,1000000))
+            event_hash = title + (str)(random.randint(1,1000000000))
             (invalid, ), = session.query(exists().where(Events.event_hash==event_hash))
 
          

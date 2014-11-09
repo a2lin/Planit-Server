@@ -30,9 +30,9 @@ class EditEventHandler(tornado.web.RequestHandler):
             if time:
                event.time = time
             session.commit()
-            self.write("event edited")
+            self.write("1")
          else:
-            self.write("unable to make changes, possibly no records found")
+            self.write("-1")
        except:
          raise
          self.write("fuk")

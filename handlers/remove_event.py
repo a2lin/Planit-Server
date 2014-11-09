@@ -21,9 +21,9 @@ class RemoveEventHandler(tornado.web.RequestHandler):
             for event_map in events_map:
                session.delete(event_map)
             session.commit()
-            self.write("finished deleting")
+            self.write("1")
          else:
-            self.write("no records found")
+            self.write("-1")
 
       except:
-            self.write("fuck my life")
+            self.write("fuk")

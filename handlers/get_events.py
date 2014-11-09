@@ -6,6 +6,12 @@ class GetEventsHandler(tornado.web.RequestHandler):
     def get(self):
        try:
          email = self.get_argument('email', '')
+
+         (valid, ), = session.query(exists().where(Users.email==email))
+      
+         if not valid:
+            self.write("-1")
+            return
          
          events_map_raw = session.query(EventsMap).filter(EventsMap.email == email)
 

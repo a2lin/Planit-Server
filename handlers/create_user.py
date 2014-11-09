@@ -7,9 +7,13 @@ from sqlalchemy import *
 class CreateUserHandler(tornado.web.RequestHandler):
     def post(self):
        try:
-         name = self.get_argument('name', True)
-         password = self.get_argument('password', True)
-         email = self.get_argument('email', True)
+         name = self.get_argument('name', '')
+         password = self.get_argument('password', '')
+         email = self.get_argument('email', '')
+
+         if not name or not password or not email:
+            self.write("0")
+            return
          
          #no duplicate users, invalid is true if user exists
          (invalid, ), = session.query(exists().where(Users.email==email))
@@ -20,7 +24,7 @@ class CreateUserHandler(tornado.web.RequestHandler):
             new_user = Users(name, password, email)
             session.add(new_user)
             session.commit()
-            self.write("fuckin' made the user: " + name)
+            self.write("1")
          
        except:
          raise
