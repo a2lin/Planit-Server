@@ -26,11 +26,15 @@ class Users(Base):
    email = Column(String(100), primary_key=True)
    name = Column(String(100))
    password = Column(String(100))
+   img_uri = Column(String(100))
+   user_hash = Column(String(100))
 
-   def __init__(self, name, password, email):
+   def __init__(self, name, password, email, img_uri, user_hash):
       self.name = name
       self.password = password
       self.email = email
+      self.img_uri = img_uri
+      self.user_hash = user_hash; 
 
    def __repr__(self):
       return "<User(%s, %s, %s>" % (self.name, self.password, self.email)

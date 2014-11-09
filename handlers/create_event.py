@@ -11,7 +11,6 @@ class CreateEventHandler(tornado.web.RequestHandler):
          title = self.get_argument('title', '')
          description = self.get_argument('description', '')
          location = self.get_argument('location', '')
-         time = self.get_argument('time', '')
          creator = self.get_argument('creator', '')
 
          # ensure that it's valid (has creator & title)
@@ -35,9 +34,15 @@ class CreateEventHandler(tornado.web.RequestHandler):
          (invalid, ), = session.query(exists().where(Events.event_hash==event_hash))
 
          while invalid:
-            event_hash = title + (str)(random.randint(1,1000000000))
+            event_hash = title + (str)(random.randint(1,10000000))
             (invalid, ), = session.query(exists().where(Events.event_hash==event_hash))
 
+         index = title.find('@')
+         time = ''
+
+         if index >= 0:
+            time = title[index+1:len(title)]
+            title = title[0:index]
          
          image_url = searchImage(title)
          new_event = Events(event_hash, title, description, image_url, location, time, creator)
